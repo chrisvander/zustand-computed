@@ -9193,10 +9193,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zustand-computed@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/zustand-computed/-/zustand-computed-0.2.0.tgz#cee8553b530a8f658e8bfdbf43d452fe9dea4ac8"
-  integrity sha512-3LuJzZ6PiC4JvPxYRnRma4qmOZGjrwZ76dvFctDjg3E6YLQIs+23mDNGkA1/lvVMQO3t86v6r7frMj/WgJJuPw==
+zustand-computed@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/zustand-computed/-/zustand-computed-0.2.1.tgz#737117fe08b4b39bf24674a5a57718fd02294fda"
+  integrity sha512-yEgm1zAIx1i1ZZVE8l2FIe37vyPkgTbrvSnXnV+ll7s6zuQ0tGnrvkpS7L9scpJXnEchrKkseQbgiSt8IZ+jrQ==
   dependencies:
     fast-deep-equal "^3.1.3"
 

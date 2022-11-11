@@ -35,6 +35,7 @@
     "typescript": "^4.8.4"
   },
   "peerDependencies": {
+    "react": "^18.2.0",
     "zustand": "^4.1.4"
   },
   "keywords": [

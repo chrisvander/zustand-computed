@@ -49,7 +49,7 @@ type ComputedStore = {
 }
 
 const computeState = (state: Store): ComputedStore => ({
-	countSq: state.count ** 2
+    countSq: state.count ** 2
 })
 
 const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(

@@ -1,8 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
 import create from 'zustand';
+import computed from 'zustand-computed';
 
-const useStore = create((set) => ({
+type Store = {
+  count: number,
+  inc: () => void,
+  dec: () => void
+}
+
+type ComputedStore = {
+  countSq: number
+}
+
+const useStore = create<Store>((set) => ({
   count: 1,
   countSq: 1,
   inc: () => set((state) => ({ count: state.count + 1 })),

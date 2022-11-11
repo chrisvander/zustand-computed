@@ -19,7 +19,7 @@ function computeState(state: Store): ComputedStore {
   }
 }
 
-const useStore = create<ComputedStore & Store>()(computed((set) => ({
+const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(computed((set) => ({
   count: 1,
   inc: () => set((state) => ({ count: state.count + 1 })),
   dec: () => set((state) => ({ count: state.count - 1 }))

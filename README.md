@@ -25,11 +25,11 @@ const computeState = (state) => ({
 })
 
 const useStore = create(
-	computed((set) => ({
-	  count: 1,
-	  inc: () => set((state) => ({ count: state.count + 1 })),
-	  dec: () => set((state) => ({ count: state.count - 1 }))
-	}), computeState)
+    computed((set) => ({
+        count: 1,
+        inc: () => set((state) => ({ count: state.count + 1 })),
+        dec: () => set((state) => ({ count: state.count - 1 }))
+    }), computeState)
 )
 ```
 
@@ -39,13 +39,13 @@ With types, the previous example would look like this:
 import computed from 'zustand-computed';
 
 type Store = {
-  count: number,
-  inc: () => void,
-  dec: () => void
+    count: number,
+    inc: () => void,
+    dec: () => void
 }
 
 type ComputedStore = {
-  countSq: number
+    countSq: number
 }
 
 const computeState = (state: Store): ComputedStore => ({
@@ -54,26 +54,26 @@ const computeState = (state: Store): ComputedStore => ({
 
 const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(
     computed((set) => ({
-      count: 1,
-      inc: () => set((state) => ({ count: state.count + 1 })),
-      dec: () => set((state) => ({ count: state.count - 1 }))
+        count: 1,
+        inc: () => set((state) => ({ count: state.count + 1 })),
+        dec: () => set((state) => ({ count: state.count - 1 }))
     }), computeState)
-  )
+)
 ```
 
 The store can then be used as normal in a React component or via the Zustand API.
 
 ```tsx
 function Counter() {
-  const { count, countSq, inc, dec } = useStore()
-  return (
-    <div>
-      <span>{count}</span><br />
-      <span>{countSq}</span><br />
-      <button onClick={inc}>+1</button>
-      <button onClick={dec}>-1</button>
-    </div>
-  )
+    const { count, countSq, inc, dec } = useStore()
+    return (
+        <div>
+            <span>{count}</span><br />
+            <span>{countSq}</span><br />
+            <button onClick={inc}>+1</button>
+            <button onClick={dec}>-1</button>
+        </div>
+    )
 }
 ```
 

@@ -6,6 +6,9 @@
   "license": "MIT",
   "main": "dist/index.js",
   "repository": "chrisvander/zustand-computed",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "test": "jest",
     "build": "tsc"

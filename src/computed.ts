@@ -64,6 +64,5 @@ const computedImpl: ComputedStateImpl = (f, compute) => (set, get, api) => {
   return Object.assign({}, st, compute(st));
 };
 
-const computed = computedImpl as unknown as ComputedStateCreator;
-
+export const computed = computedImpl as unknown as ComputedStateCreator;
 export default computed;

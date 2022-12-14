@@ -1,1 +1,2 @@
-export * from "./computed"
+export * from "./computed";
+export { default } from "./computed";

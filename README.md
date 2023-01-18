@@ -91,7 +91,7 @@ A fully-featured example can be found under the "example" directory.
 
 By default, when `zustand-computed` runs your `computeState` function, it tracks accessed variables and does not trigger a computation if one of those variables do not change. This could potentially be problematic if you have nested control flow inside of `computeState`, or perhaps you want it to run on _all_ changes regardless of use inside of `computeState`. To disable automatic selector detection, you can pass a third `opts` variable to the `computed` constructor, e.g.
 
-```
+```ts
 const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(
     computed((set) => ({
         count: 1,

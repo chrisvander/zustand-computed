@@ -10,7 +10,7 @@
     "/dist"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "build": "tsc"
   },
   "dependencies": {

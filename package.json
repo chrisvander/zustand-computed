@@ -13,9 +13,7 @@
     "test": "jest --watch",
     "build": "tsc"
   },
-  "dependencies": {
-    "fast-deep-equal": "^3.1.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",

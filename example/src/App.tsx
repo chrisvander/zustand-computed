@@ -1,6 +1,6 @@
 import logo from "./logo.svg"
 import "./App.css"
-import create from "zustand"
+import { create } from "zustand"
 import computed from "zustand-computed"
 
 type Store = {

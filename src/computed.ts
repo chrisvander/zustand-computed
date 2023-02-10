@@ -20,15 +20,13 @@ export type ComputedStateCreator = <
 
 type Write<T, U> = Omit<T, keyof U> & U
 
-type StoreCompute<T, A> = Write<
-  StoreApi<T>,
-  {
-    getState: () => T & A
-    subscribe: (listener: (state: T & A, prevState: T & A) => void) => () => void
-  }
->
+type StoreCompute<S, A> = S extends {
+  getState: () => infer T
+}
+  ? Omit<StoreApi<T & A>, "setState">
+  : never
 
-type WithCompute<S, A> = S extends { getState: () => infer T } ? Write<S, StoreCompute<T, A>> : never
+type WithCompute<S, A> = Write<S, StoreCompute<S, A>>
 
 declare module "zustand" {
   interface StoreMutators<S, A> {

@@ -1,7 +1,9 @@
 import logo from "./logo.svg"
 import "./App.css"
 import { create } from "zustand"
-import computed from "zustand-computed"
+import { devtools } from "zustand/middleware"
+import { immer } from "zustand/middleware/immer"
+import { computed } from "zustand-computed"
 
 type Store = {
   count: number
@@ -19,16 +21,24 @@ function computeState(state: Store): ComputedStore {
   }
 }
 
-const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(
-  computed(
-    (set) => ({
-      count: 1,
-      inc: () => set((state) => ({ count: state.count + 1 })),
-      dec: () => set((state) => ({ count: state.count - 1 })),
-    }),
-    computeState
+const useStore = create<Store>()(
+  devtools(
+    computed(
+      immer((set) => ({
+        count: 1,
+        inc: () =>
+          set((state) => {
+            // example with Immer middleware
+            state.count += 1
+          }),
+        dec: () => set((state) => ({ count: state.count - 1 })),
+      })),
+      computeState
+    )
   )
 )
+
+useStore.setState({ countSq: 100 }) // error
 
 function Counter() {
   const { count, countSq, inc, dec } = useStore()

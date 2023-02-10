@@ -55,7 +55,8 @@ const computeState = (state: Store): ComputedStore => ({
   countSq: state.count ** 2,
 })
 
-const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(
+// use curried create
+const useStore = create<Store>()(
   computed(
     (set) => ({
       count: 1,
@@ -87,17 +88,44 @@ function Counter() {
 
 A fully-featured example can be found under the "example" directory.
 
+## With Middleware
+
+Here's an example with middleware. Works as expected.
+
+```ts
+const useStore = create<Store>()(
+  devtools(
+    computed(
+      immer((set) => ({
+        count: 1,
+        inc: () =>
+          set((state) => {
+            // example with Immer middleware
+            state.count += 1
+          }),
+        dec: () => set((state) => ({ count: state.count - 1 })),
+      })),
+      computeState
+    )
+  )
+)
+```
+
 ## Selectors
 
 By default, when `zustand-computed` runs your `computeState` function, it tracks accessed variables and does not trigger a computation if one of those variables do not change. This could potentially be problematic if you have nested control flow inside of `computeState`, or perhaps you want it to run on _all_ changes regardless of use inside of `computeState`. To disable automatic selector detection, you can pass a third `opts` variable to the `computed` constructor, e.g.
 
 ```ts
 const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(
-    computed((set) => ({
-        count: 1,
-        inc: () => set((state) => ({ count: state.count + 1 })),
-        dec: () => set((state) => ({ count: state.count - 1 }))
-    }), computeState, { disableProxy: true })
+  computed(
+    (set) => ({
+      count: 1,
+      inc: () => set((state) => ({ count: state.count + 1 })),
+      dec: () => set((state) => ({ count: state.count - 1 })),
+    }),
+    computeState,
+    { disableProxy: true }
+  )
 )
 ```
 

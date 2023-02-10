@@ -1,6 +1,6 @@
 {
   "name": "zustand-computed",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "A Zustand middleware to create computed states.",
   "author": "chrisvander",
   "license": "MIT",

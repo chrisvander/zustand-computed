@@ -4,14 +4,21 @@
   "description": "A Zustand middleware to create computed states.",
   "author": "chrisvander",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "repository": "chrisvander/zustand-computed",
   "files": [
     "/dist"
   ],
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "rm -rf dist/* && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && ./fixup.sh"
   },
   "dependencies": {},
   "devDependencies": {

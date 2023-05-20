@@ -137,5 +137,5 @@ Other options include passing a `keys` array, which explicitly spell out the sel
 [downloads-url]: https://www.npmtrends.com/zustand-computed
 [npm-img]: https://img.shields.io/npm/v/zustand-computed
 [npm-url]: https://www.npmjs.com/package/zustand-computed
-[issues-img]: https://img.shields.io/github/issues/chrisvander/zustand-computed/issues
+[issues-img]: https://img.shields.io/github/issues/chrisvander/zustand-computed
 [issues-url]: https://github.com/chrisvander/chrisvander/zustand-computed/issues

@@ -4,7 +4,7 @@
       "esnext",
       "dom"
     ],
-    "sourceMap": true,
+    "sourceMap": false,
     "allowJs": false,
     "declaration": true,
     "moduleResolution": "node",

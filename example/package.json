@@ -17,7 +17,7 @@
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
     "zustand": "^4.3.2",
-    "zustand-computed": "file:../dist/"
+    "zustand-computed": "file:../"
   },
   "scripts": {
     "start": "react-scripts start",

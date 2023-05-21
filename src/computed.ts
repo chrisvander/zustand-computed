@@ -1,4 +1,4 @@
-import { StateCreator, StoreApi, StoreMutatorIdentifier } from "zustand"
+import { StateCreator, StoreApi, StoreMutatorIdentifier, Mutate } from "zustand"
 import { shallow } from "zustand/shallow"
 
 export type ComputedStateOpts<T> = {
@@ -18,19 +18,18 @@ export type ComputedStateCreator = <
   opts?: ComputedStateOpts<T>
 ) => StateCreator<T, Mps, [["chrisvander/zustand-computed", A], ...Mcs], T & A>
 
+type Cast<T, U> = T extends U ? T : U
 type Write<T, U> = Omit<T, keyof U> & U
-
 type StoreCompute<S, A> = S extends {
   getState: () => infer T
 }
   ? Omit<StoreApi<T & A>, "setState">
   : never
-
 type WithCompute<S, A> = Write<S, StoreCompute<S, A>>
 
 declare module "zustand" {
   interface StoreMutators<S, A> {
-    "chrisvander/zustand-computed": WithCompute<S, A>
+    "chrisvander/zustand-computed": WithCompute<Cast<S, object>, A>
   }
 }
 
@@ -95,8 +94,9 @@ const computedImpl: ComputedStateImpl = (f, compute, opts) => {
       }, replace)
     }
 
-    api.setState = setWithComputed
-    const st = f(setWithComputed, get, api) as T & A
+    const _api = api as Mutate<StoreApi<T>, [["chrisvander/zustand-computed", A]]>
+    _api.setState = setWithComputed
+    const st = f(setWithComputed, get, _api) as T & A
     return Object.assign({}, st, compute(st))
   }
 }

@@ -1,5 +1,5 @@
-import { computed, ComputedStateOpts } from "./computed"
 import { create } from "zustand"
+import { computed, ComputedStateOpts } from "./computed"
 
 type Store = {
   count: number

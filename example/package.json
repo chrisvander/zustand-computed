@@ -16,7 +16,7 @@
     "react-scripts": "5.0.1",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
-    "zustand": "^4.3.2",
+    "zustand": "^4.3.8",
     "zustand-computed": "file:../"
   },
   "scripts": {

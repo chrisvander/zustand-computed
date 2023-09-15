@@ -4,19 +4,12 @@
       "esnext",
       "dom"
     ],
+    "strict": true,
     "sourceMap": false,
     "allowJs": false,
     "declaration": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
   },
   "include": [
     "src"

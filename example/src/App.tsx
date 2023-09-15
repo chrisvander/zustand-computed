@@ -59,6 +59,9 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <h1>
+          <a href="https://github.com/chrisvander/zustand-computed">zustand-computed</a>
+        </h1>
         <Counter />
       </header>
     </div>

@@ -4,18 +4,18 @@ import { shallow } from "zustand/shallow"
 export type ComputedStateOpts<T> = {
   keys?: (keyof T)[]
   disableProxy?: boolean
-  equalityFn?: (a: T, b: T) => boolean
+  equalityFn?: <Y>(a: Y, b: Y) => boolean
 }
 
 export type ComputedStateCreator = <
   T extends object,
   A extends object,
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
-  Mcs extends [StoreMutatorIdentifier, unknown][] = []
+  Mcs extends [StoreMutatorIdentifier, unknown][] = [],
 >(
   f: StateCreator<T, [...Mps, ["chrisvander/zustand-computed", A]], Mcs>,
   compute: (state: T) => A,
-  opts?: ComputedStateOpts<T>
+  opts?: ComputedStateOpts<T>,
 ) => StateCreator<T, Mps, [["chrisvander/zustand-computed", A], ...Mcs], T & A>
 
 type Cast<T, U> = T extends U ? T : U
@@ -36,7 +36,7 @@ declare module "zustand" {
 type ComputedStateImpl = <T extends object, A extends object>(
   f: StateCreator<T, [], []>,
   compute: (state: T) => A,
-  opts?: ComputedStateOpts<T>
+  opts?: ComputedStateOpts<T>,
 ) => StateCreator<T, [], [], T & A>
 
 const computedImpl: ComputedStateImpl = (f, compute, opts) => {
@@ -56,28 +56,31 @@ const computedImpl: ComputedStateImpl = (f, compute, opts) => {
     // we track which selectors are accessed
     const useSelectors = opts?.disableProxy !== true || !!opts?.keys
     const useProxy = opts?.disableProxy !== true && !opts?.keys
-    const computeAndMerge = (state: T): T & A => {
+    const computeAndMerge = (state: T | (T & A)): T & A => {
       // create a Proxy to track which selectors are accessed
       const stateProxy = new Proxy(
         { ...state },
         {
           get: (_, prop) => {
             trackedSelectors.add(prop)
-            return state[prop]
+            return state[prop as keyof T]
           },
-        }
+        },
       )
 
       // calculate the new computed state
-      const fullComputedState: A = compute(useProxy ? stateProxy : { ...state })
-      const newState = { ...state, ...fullComputedState }
+      const computedState: A = compute(useProxy ? stateProxy : { ...state })
 
-      // limit the new computed state down to object refs that changed
-      for (const k of Object.keys(fullComputedState))
-        if (!equalityFn(state[k], fullComputedState[k])) newState[k] = fullComputedState[k]
+      // if part of the computed state did not change according to the equalityFn
+      // then we use the object ref from the previous state. This is to prevent
+      // unnecessary re-renders.
+      for (const k of Object.keys(computedState) as (keyof A)[]) {
+        if (equalityFn(computedState[k], (state as T & A)[k])) {
+          computedState[k] = (state as T & A)[k]
+        }
+      }
 
-      // return state with the changed properties of computed
-      return newState
+      return { ...state, ...computedState }
     }
 
     // higher level function to handle compute & compare overhead

@@ -7,13 +7,13 @@ permissions:
   contents: write
   pull-requests: write
 
-name: release-please
+name: Release
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - name: release
+      - id: release
         uses: google-github-actions/release-please-action@v3
         with:
           release-type: node

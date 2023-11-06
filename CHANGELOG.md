@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.7](https://github.com/chrisvander/zustand-computed/compare/v1.3.6...v1.3.7) (2023-11-06)
+
+
+### Bug Fixes
+
+* changed optional param to rest parameter, fix type ([b42971d](https://github.com/chrisvander/zustand-computed/commit/b42971d30b3846d44b0b5487770f4a9efc75bdf2))
+* updated setWithComputed by adding the third optional action parameter ([570cf6a](https://github.com/chrisvander/zustand-computed/commit/570cf6a7a2809fff1b4e4e0e6417c9086e08a8fa))
+
 ## [1.3.6](https://github.com/chrisvander/zustand-computed/compare/v1.3.5...v1.3.6) (2023-09-15)
 
 

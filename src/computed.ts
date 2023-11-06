@@ -39,6 +39,10 @@ type ComputedStateImpl = <T extends object, A extends object>(
   opts?: ComputedStateOpts<T>,
 ) => StateCreator<T, [], [], T & A>
 
+type SetStateWithArgs = Parameters<ReturnType<ComputedStateImpl>>[0] extends (...args: infer U) => void
+  ? (...args: [...U, ...unknown[]]) => void
+  : never
+
 const computedImpl: ComputedStateImpl = (f, compute, opts) => {
   // set of keys that have been accessed in any compute call
   const trackedSelectors = new Set<string | number | symbol>()
@@ -84,8 +88,8 @@ const computedImpl: ComputedStateImpl = (f, compute, opts) => {
     }
 
     // higher level function to handle compute & compare overhead
-    const setWithComputed = (update: T | ((state: T) => T), replace?: boolean, ...a: []) => {
-      set((state: T): T & A => {
+    const setWithComputed = (update: T | ((state: T) => T), replace?: boolean, ...args: unknown[]) => {
+      ;(set as SetStateWithArgs)((state: T): T & A => {
         const updated = typeof update === "object" ? update : update(state)
 
         if (useSelectors && trackedSelectors.size !== 0 && !Object.keys(updated).some((k) => trackedSelectors.has(k))) {
@@ -94,7 +98,7 @@ const computedImpl: ComputedStateImpl = (f, compute, opts) => {
         }
 
         return computeAndMerge({ ...state, ...updated })
-      }, replace, ...a)
+      }, replace, ...args)
     }
 
     const _api = api as Mutate<StoreApi<T>, [["chrisvander/zustand-computed", A]]>

@@ -12,11 +12,12 @@ export type ComputedStateCreator = <
   A extends object,
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
   Mcs extends [StoreMutatorIdentifier, unknown][] = [],
+  U = T,
 >(
-  f: StateCreator<T, [...Mps, ["chrisvander/zustand-computed", A]], Mcs>,
+  f: StateCreator<T, [...Mps, ["chrisvander/zustand-computed", A]], Mcs, U>,
   compute: (state: T) => A,
   opts?: ComputedStateOpts<T>,
-) => StateCreator<T, Mps, [["chrisvander/zustand-computed", A], ...Mcs], T & A>
+) => StateCreator<T, Mps, [["chrisvander/zustand-computed", A], ...Mcs], U & A>
 
 type Cast<T, U> = T extends U ? T : U
 type Write<T, U> = Omit<T, keyof U> & U

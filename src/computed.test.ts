@@ -1,4 +1,4 @@
-import { create } from "zustand"
+import { create, StateCreator } from "zustand"
 import { computed, ComputedStateOpts } from "./computed"
 
 type Store = {
@@ -130,5 +130,50 @@ describe("custom config", () => {
     expect(useStore.getState().count).toEqual(4)
     expect(useStore.getState().countSq).toEqual(16)
     expect(computeStateMock).toHaveBeenCalledTimes(4)
+  })
+})
+
+describe("slices pattern", () => {
+  const computeStateMock = jest.fn(computeState)
+  const makeStore = () => {
+    const createXySlice = computed<Store, ComputedStore, [], [], Pick<Store, "count" | "dec">>(
+      (set) => ({
+        count: 1,
+        dec: () => set((state) => ({ count: state.count - 1 })),
+      }),
+      computeStateMock
+    )
+    const createCountSlice: StateCreator<Store & ComputedStore, [], [], Pick<Store, "x" | "y" | "inc">> = (set) => ({
+      x: 1,
+      y: 1,
+      // this should not trigger compute function
+      inc: () => set((state) => ({ count: state.count + 2 })),
+    })
+    return create<Store & ComputedStore>()((...a) => ({
+      ...createXySlice(...a),
+      ...createCountSlice(...a),
+    }))
+  }
+
+  beforeEach(() => {
+    computeStateMock.mockClear()
+  })
+
+  test("computed works on slices pattern example", () => {
+    const useStore = makeStore()
+    expect(computeStateMock).toHaveBeenCalledTimes(1)
+    expect(useStore.getState().count).toEqual(1)
+    expect(useStore.getState().countSq).toEqual(1)
+    useStore.getState().inc()
+    expect(useStore.getState().count).toEqual(3)
+    expect(useStore.getState().countSq).toEqual(1)
+    expect(computeStateMock).toHaveBeenCalledTimes(1)
+    useStore.getState().dec()
+    expect(useStore.getState().count).toEqual(2)
+    expect(useStore.getState().countSq).toEqual(4)
+    expect(computeStateMock).toHaveBeenCalledTimes(2)
+    useStore.setState({ count: 4 })
+    expect(useStore.getState().countSq).toEqual(16)
+    expect(computeStateMock).toHaveBeenCalledTimes(3)
   })
 })

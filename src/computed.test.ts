@@ -39,8 +39,8 @@ describe("default config", () => {
           inc: () => set((state) => ({ count: state.count + 1 })),
           dec: () => set((state) => ({ count: state.count - 1 })),
         }),
-        computeStateMock
-      )
+        computeStateMock,
+      ),
     )
 
   let useStore: ReturnType<typeof makeStore>
@@ -98,8 +98,8 @@ describe("custom config", () => {
           dec: () => set((state) => ({ count: state.count - 1 })),
         }),
         computeStateMock,
-        opts
-      )
+        opts,
+      ),
     )
 
   beforeEach(() => {
@@ -135,15 +135,22 @@ describe("custom config", () => {
 
 describe("slices pattern", () => {
   const computeStateMock = jest.fn(computeState)
+  type CountSlice = Pick<Store, "count" | "dec">
+  type XYSlice = Pick<Store, "x" | "y" | "inc">
   const makeStore = () => {
-    const createXySlice = computed<Store, ComputedStore, [], [], Pick<Store, "count" | "dec">>(
+    const createXySlice: StateCreator<
+      Store,
+      [],
+      [["chrisvander/zustand-computed", ComputedStore]],
+      CountSlice & ComputedStore
+    > = computed(
       (set) => ({
         count: 1,
         dec: () => set((state) => ({ count: state.count - 1 })),
       }),
-      computeStateMock
+      computeStateMock,
     )
-    const createCountSlice: StateCreator<Store & ComputedStore, [], [], Pick<Store, "x" | "y" | "inc">> = (set) => ({
+    const createCountSlice: StateCreator<Store, [], [], XYSlice> = (set) => ({
       x: 1,
       y: 1,
       // this should not trigger compute function

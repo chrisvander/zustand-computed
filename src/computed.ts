@@ -12,12 +12,11 @@ export type ComputedStateCreator = <
   A extends object,
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
   Mcs extends [StoreMutatorIdentifier, unknown][] = [],
-  U = T,
 >(
-  f: StateCreator<T, [...Mps, ["chrisvander/zustand-computed", A]], Mcs, U>,
+  f: StateCreator<T, [...Mps, ["chrisvander/zustand-computed", A]], Mcs>,
   compute: (state: T) => A,
   opts?: ComputedStateOpts<T>,
-) => StateCreator<T, Mps, [["chrisvander/zustand-computed", A], ...Mcs], U & A>
+) => StateCreator<T, Mps, [["chrisvander/zustand-computed", A], ...Mcs], T & A>
 
 type Cast<T, U> = T extends U ? T : U
 type Write<T, U> = Omit<T, keyof U> & U
@@ -55,7 +54,9 @@ const computedImpl: ComputedStateImpl = (f, compute, opts) => {
 
     if (opts?.keys) {
       const selectorKeys = opts.keys
-      selectorKeys.forEach((key) => trackedSelectors.add(key))
+      for (const key of selectorKeys) {
+        trackedSelectors.add(key)
+      }
     }
 
     // we track which selectors are accessed
@@ -90,16 +91,24 @@ const computedImpl: ComputedStateImpl = (f, compute, opts) => {
 
     // higher level function to handle compute & compare overhead
     const setWithComputed = (update: T | ((state: T) => T), replace?: boolean, ...args: unknown[]) => {
-      ;(set as SetStateWithArgs)((state: T): T & A => {
-        const updated = typeof update === "object" ? update : update(state)
+      ;(set as SetStateWithArgs)(
+        (state: T): T & A => {
+          const updated = typeof update === "object" ? update : update(state)
 
-        if (useSelectors && trackedSelectors.size !== 0 && !Object.keys(updated).some((k) => trackedSelectors.has(k))) {
-          // if we have a selector set, but none of the updated keys are in the selector set, then we can skip the compute
-          return { ...state, ...updated } as T & A
-        }
+          if (
+            useSelectors &&
+            trackedSelectors.size !== 0 &&
+            !Object.keys(updated).some((k) => trackedSelectors.has(k))
+          ) {
+            // if we have a selector set, but none of the updated keys are in the selector set, then we can skip the compute
+            return { ...state, ...updated } as T & A
+          }
 
-        return computeAndMerge({ ...state, ...updated })
-      }, replace, ...args)
+          return computeAndMerge({ ...state, ...updated })
+        },
+        replace,
+        ...args,
+      )
     }
 
     const _api = api as Mutate<StoreApi<T>, [["chrisvander/zustand-computed", A]]>

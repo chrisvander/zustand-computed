@@ -159,7 +159,7 @@ describe("slices pattern", () => {
         count: 1,
         dec: () => set((state) => ({ count: state.count - 1 })),
       }),
-      computeSlice,
+      computeSliceMock,
     )
 
     const createXySlice: StateCreator<Store, [], [], XYSlice> = (set) => ({

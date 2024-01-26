@@ -133,12 +133,23 @@ describe("custom config", () => {
   })
 })
 
+type CountSlice = Pick<Store, "count" | "dec">
+type XYSlice = Pick<Store, "x" | "y" | "inc">
+function computeSlice(state: CountSlice): ComputedStore {
+  const nestedResult = {
+    stringified: JSON.stringify(state.count),
+  }
+
+  return {
+    countSq: state.count ** 2,
+    nestedResult,
+  }
+}
+
 describe("slices pattern", () => {
-  const computeStateMock = jest.fn(computeState)
-  type CountSlice = Pick<Store, "count" | "dec">
-  type XYSlice = Pick<Store, "x" | "y" | "inc">
+  const computeSliceMock = jest.fn(computeSlice)
   const makeStore = () => {
-    const createXySlice: StateCreator<
+    const createCountSlice: StateCreator<
       Store,
       [],
       [["chrisvander/zustand-computed", ComputedStore]],
@@ -148,39 +159,41 @@ describe("slices pattern", () => {
         count: 1,
         dec: () => set((state) => ({ count: state.count - 1 })),
       }),
-      computeStateMock,
+      computeSlice,
     )
-    const createCountSlice: StateCreator<Store, [], [], XYSlice> = (set) => ({
+
+    const createXySlice: StateCreator<Store, [], [], XYSlice> = (set) => ({
       x: 1,
       y: 1,
       // this should not trigger compute function
       inc: () => set((state) => ({ count: state.count + 2 })),
     })
+
     return create<Store & ComputedStore>()((...a) => ({
-      ...createXySlice(...a),
       ...createCountSlice(...a),
+      ...createXySlice(...a),
     }))
   }
 
   beforeEach(() => {
-    computeStateMock.mockClear()
+    computeSliceMock.mockClear()
   })
 
   test("computed works on slices pattern example", () => {
     const useStore = makeStore()
-    expect(computeStateMock).toHaveBeenCalledTimes(1)
+    expect(computeSliceMock).toHaveBeenCalledTimes(1)
     expect(useStore.getState().count).toEqual(1)
     expect(useStore.getState().countSq).toEqual(1)
     useStore.getState().inc()
     expect(useStore.getState().count).toEqual(3)
     expect(useStore.getState().countSq).toEqual(1)
-    expect(computeStateMock).toHaveBeenCalledTimes(1)
+    expect(computeSliceMock).toHaveBeenCalledTimes(1)
     useStore.getState().dec()
     expect(useStore.getState().count).toEqual(2)
     expect(useStore.getState().countSq).toEqual(4)
-    expect(computeStateMock).toHaveBeenCalledTimes(2)
+    expect(computeSliceMock).toHaveBeenCalledTimes(2)
     useStore.setState({ count: 4 })
     expect(useStore.getState().countSq).toEqual(16)
-    expect(computeStateMock).toHaveBeenCalledTimes(3)
+    expect(computeSliceMock).toHaveBeenCalledTimes(3)
   })
 })

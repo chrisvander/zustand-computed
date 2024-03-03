@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.4.0](https://github.com/chrisvander/zustand-computed/compare/v1.3.7...v1.4.0) (2024-03-03)
+
+
+### Features
+
+* support slices pattern type ([#16](https://github.com/chrisvander/zustand-computed/issues/16)) ([043d1b6](https://github.com/chrisvander/zustand-computed/commit/043d1b6cbce8bbae104b072f8a6b97d637b9dd06))
+
+
+### Bug Fixes
+
+* formatting, github action ([cc5b724](https://github.com/chrisvander/zustand-computed/commit/cc5b7249f90d635a96cfa09143400a296d2d3750))
+* modify example ([04089ff](https://github.com/chrisvander/zustand-computed/commit/04089ffe37dd2e630343f65ccad64aec532d289c))
+* test ([7d3807f](https://github.com/chrisvander/zustand-computed/commit/7d3807fb21c9451c0d7f73a5dbaf9748ad39d01f))
+* test and tweak slices pattern impl ([a50baf3](https://github.com/chrisvander/zustand-computed/commit/a50baf39b17ed8983039c6f76ed2bd8986cf4f72))
+* type for slices ([0f022cf](https://github.com/chrisvander/zustand-computed/commit/0f022cf29d5bb430e694eb24c6f30c89867255ce))
+* update tests for slices pattern, represents better use scenario ([50c9854](https://github.com/chrisvander/zustand-computed/commit/50c98549af8de02020622a0869e48b64650a18e6))
+
 ## [1.3.7](https://github.com/chrisvander/zustand-computed/compare/v1.3.6...v1.3.7) (2023-11-06)
 
 

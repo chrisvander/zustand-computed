@@ -26,10 +26,13 @@ const computeState = (state) => ({
 
 const useStore = create(
   computed(
-    (set) => ({
+    (set, get) => ({
       count: 1,
       inc: () => set((state) => ({ count: state.count + 1 })),
       dec: () => set((state) => ({ count: state.count - 1 })),
+      // get() function has access to ComputedStore
+      square: () => set(() => ({ count: get().countSq })),
+      root: () => set((state) => ({ count: Math.floor(Math.sqrt(state.count)) })),
     }),
     computeState
   )
@@ -62,6 +65,9 @@ const useStore = create<Store>()(
       count: 1,
       inc: () => set((state) => ({ count: state.count + 1 })),
       dec: () => set((state) => ({ count: state.count - 1 })),
+      // get() function has access to ComputedStore
+      square: () => set(() => ({ count: get().countSq })),
+      root: () => set((state) => ({ count: Math.floor(Math.sqrt(state.count)) })),
     }),
     computeState
   )
@@ -90,7 +96,7 @@ A fully-featured example can be found under the "example" directory.
 
 ## With Middleware
 
-Here's an example with middleware. Works as expected.
+Here's an example with the Immer middleware. Note that types may not be as you expect when using Immer, as it derives the SetState type from the output of GetState, where `zustand-computed` makes SetState only allow the regular Store and the GetState return both the store and the computed store.
 
 ```ts
 const useStore = create<Store>()(

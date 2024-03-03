@@ -25,20 +25,19 @@ function computeState(state: Store): ComputedStore {
 const useStore = create<Store>()(
   devtools(
     computed(
+      (set, get) => ({
+        count: 1,
+        inc: () =>
+          set((state) => {
+            // return { countSq: 1 } would error here; SetState does not include ComputedStore
+            return { count: state.count + 1 }
+          }),
+        dec: () => set((state) => ({ count: state.count - 1 })),
+        // the get() function has access to the computed store
+        square: () => set({ count: get().countSq }),
+        root: () => set({ count: Math.floor(Math.sqrt(get().count)) }),
+      }),
       computeState,
-      (set, get) =>
-        ({
-          count: 1,
-          inc: () =>
-            set((state) => {
-              // return { countSq: 1 } would error here; SetState does not include ComputedStore
-              return { count: state.count + 1 }
-            }),
-          dec: () => set((state) => ({ count: state.count - 1 })),
-          // the get() function has access to the computed store
-          square: () => set({ count: get().countSq }),
-          root: () => set({ count: Math.floor(Math.sqrt(get().count)) }),
-        }) satisfies Store,
     ),
   ),
 )

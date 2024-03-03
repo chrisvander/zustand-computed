@@ -33,9 +33,9 @@ const useStore = create<Store>()(
           }),
         dec: () => set((state) => ({ count: state.count - 1 })),
       })),
-      computeState
-    )
-  )
+      computeState,
+    ),
+  ),
 )
 
 useStore.setState({ countSq: 100 }) // error
@@ -48,8 +48,12 @@ function Counter() {
       <br />
       <span>{countSq}</span>
       <br />
-      <button onClick={inc}>+1</button>
-      <button onClick={dec}>-1</button>
+      <button type="button" onClick={inc}>
+        +1
+      </button>
+      <button type="button" onClick={dec}>
+        -1
+      </button>
     </div>
   )
 }

@@ -96,7 +96,10 @@ A fully-featured example can be found under the "example" directory.
 
 ## With Middleware
 
-Here's an example with the Immer middleware. Note that types may not be as you expect when using Immer, as it derives the SetState type from the output of GetState, where `zustand-computed` makes SetState only allow the regular Store and the GetState return both the store and the computed store.
+Here's an example with the Immer middleware.
+
+> [!WARNING]  
+> Types may not be as you expect when using Immer, as it derives the SetState type from the output of GetState, where `zustand-computed` makes SetState only allow the regular Store and the GetState return both the store and the computed store. To access the ComputedStore inside Immer, you will need to assert the `Store` type as `Store & ComputedStore`.
 
 ```ts
 const useStore = create<Store>()(

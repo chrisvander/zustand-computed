@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/chrisvander/zustand-computed/compare/v1.4.0...v1.4.1) (2024-04-18)
+
+
+### Bug Fixes
+
+* module zustand -&gt; zustand/vanilla ([#18](https://github.com/chrisvander/zustand-computed/issues/18)) ([6feb628](https://github.com/chrisvander/zustand-computed/commit/6feb628fdb1bf3a924cdb438e903f09471845b9e))
+
 ## [1.4.0](https://github.com/chrisvander/zustand-computed/compare/v1.3.7...v1.4.0) (2024-03-03)
 
 

@@ -28,7 +28,7 @@ type StoreCompute<S, A> = S extends {
   : never
 type WithCompute<S, A> = Write<S, StoreCompute<S, A>>
 
-declare module "zustand" {
+declare module "zustand/vanilla" {
   interface StoreMutators<S, A> {
     "chrisvander/zustand-computed": WithCompute<Cast<S, object>, A>
   }

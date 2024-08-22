@@ -1,2 +1,2 @@
-export * from "./computed.js"
-export { default } from "./computed.js"
+export * from "./computed"
+export { computed as default } from "./computed"

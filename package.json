@@ -1,6 +1,6 @@
 {
   "name": "zustand-computed",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "author": "chrisvander",
   "repository": "chrisvander/zustand-computed",
   "main": "dist/index.js",

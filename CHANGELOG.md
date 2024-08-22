@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/chrisvander/zustand-computed/compare/v1.4.1...v1.4.2) (2024-08-22)
+
+
+### Bug Fixes
+
+* use type imports, organize imports ([d3f007b](https://github.com/chrisvander/zustand-computed/commit/d3f007ba3db24b2c1d14576e33f0eca61b329a4f))
+
 ## [1.4.1](https://github.com/chrisvander/zustand-computed/compare/v1.4.0...v1.4.1) (2024-04-18)
 
 

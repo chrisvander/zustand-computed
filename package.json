@@ -1,33 +1,16 @@
 {
   "name": "zustand-computed",
   "version": "1.4.2",
-  "description": "A Zustand middleware to create computed states.",
   "author": "chrisvander",
-  "license": "MIT",
+  "repository": "chrisvander/zustand-computed",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.mjs"
-    }
-  },
-  "repository": "chrisvander/zustand-computed",
-  "files": [
-    "/dist"
-  ],
-  "scripts": {
-    "check": "biome check --write",
-    "format": "biome format --write",
-    "lint": "biome lint",
-    "build": "vite build"
-  },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "@tsconfig/recommended": "^1.0.7",
-    "@types/jest": "^29.5.12",
+    "@tsconfig/bun": "^1.0.7",
+    "@types/bun": "^1.1.6",
     "@types/node": "^22.5.0",
     "husky": "^9.1.5",
     "react": "^18.3.1",
@@ -41,18 +24,20 @@
     "react": "^18.2.0",
     "zustand": "^4.3.8"
   },
-  "keywords": [
-    "zustand",
-    "computed",
-    "calculated",
-    "state",
-    "react",
-    "plugin",
-    "middleware",
-    "npm",
-    "typescript"
-  ],
-  "dependencies": {
-    "@tsconfig/bun": "^1.0.7"
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.mjs"
+    }
+  },
+  "description": "A Zustand middleware to create computed states.",
+  "files": ["/dist"],
+  "keywords": ["zustand", "computed", "calculated", "state", "react", "plugin", "middleware", "npm", "typescript"],
+  "license": "MIT",
+  "scripts": {
+    "check": "biome check --write",
+    "format": "biome format --write",
+    "lint": "biome lint",
+    "build": "vite build"
   }
 }

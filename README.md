@@ -103,22 +103,24 @@ A fully-featured example can be found under the "example" directory.
 Here's an example with the Immer middleware.
 
 > [!WARNING]
-> Types may not be as you expect when using Immer, as it derives the SetState type from the output of GetState, where `zustand-computed` makes SetState only allow the regular Store and the GetState return both the store and the computed store. To access the ComputedStore inside Immer, you will need to assert the `Store` type as `Store & ComputedStore`.
+> Immer derives the SetState type from the output of GetState, where `zustand-computed` types SetState to allow only the regular Store and types GetState to return both the store and the computed store. To avoid this issue, you may need to apply Immer outside of `zustand-computed`. If `zustand-computed` must be outside of Immer, you will need to assert the `Store` type as `Store & ComputedStore`.
 
 ```ts
 const useStore = create<Store>()(
   devtools(
-    computed(
-      immer((set) => ({
-        count: 1,
-        inc: () =>
-          set((state) => {
-            // example with Immer middleware
-            state.count += 1
-          }),
-        dec: () => set((state) => ({ count: state.count - 1 })),
-      })),
-      computeState
+    immer(
+      computed(
+        (set) => ({
+          count: 1,
+          inc: () =>
+            set((state) => {
+              // example with Immer middleware
+              state.count += 1
+            }),
+          dec: () => set((state) => ({ count: state.count - 1 })),
+        }),
+        computeState
+      ),
     )
   )
 )
@@ -144,8 +146,8 @@ const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]
 
 Other options include passing a `keys` array, which explicitly spell out the selectors which trigger re-computation. You can also pass a custom `equalityFn`, such as [fast-deep-equal](https://github.com/epoberezkin/fast-deep-equal) instead of the default `zustand/shallow`.
 
-[build-img]: https://github.com/chrisvander/zustand-computed/actions/workflows/release.yml/badge.svg
-[build-url]: https://github.com/chrisvander/zustand-computed/actions/workflows/release.yml
+[build-img]: https://github.com/chrisvander/zustand-computed/actions/workflows/ci.yml/badge.svg
+[build-url]: https://github.com/chrisvander/zustand-computed/actions/workflows/ci.yml
 [downloads-img]: https://img.shields.io/npm/dt/zustand-computed
 [downloads-url]: https://www.npmtrends.com/zustand-computed
 [npm-img]: https://img.shields.io/npm/v/zustand-computed

@@ -1,3 +1,4 @@
+import { describe, expect, test, beforeEach, mock } from "bun:test"
 import { type StateCreator, create } from "zustand"
 import { type ComputedStateOpts, computed } from "./computed"
 
@@ -28,7 +29,7 @@ function computeState(state: Store): ComputedStore {
 }
 
 describe("default config", () => {
-  const computeStateMock = jest.fn(computeState)
+  const computeStateMock = mock(computeState)
   const makeStore = () =>
     create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(
       computed(
@@ -45,7 +46,7 @@ describe("default config", () => {
 
   let useStore: ReturnType<typeof makeStore>
   beforeEach(() => {
-    jest.clearAllMocks()
+    computeStateMock.mockClear()
     useStore = makeStore()
   })
 
@@ -86,7 +87,7 @@ describe("default config", () => {
 })
 
 describe("custom config", () => {
-  const computeStateMock = jest.fn(computeState)
+  const computeStateMock = mock(computeState)
   const makeStore = (opts?: ComputedStateOpts<Store>) =>
     create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(
       computed(
@@ -147,7 +148,7 @@ function computeSlice(state: CountSlice): ComputedStore {
 }
 
 describe("slices pattern", () => {
-  const computeSliceMock = jest.fn(computeSlice)
+  const computeSliceMock = mock(computeSlice)
   const makeStore = () => {
     const createCountSlice: StateCreator<
       Store,

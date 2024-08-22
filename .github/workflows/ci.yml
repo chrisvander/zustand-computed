@@ -19,6 +19,8 @@ jobs:
   release-please:
     name: Release Please
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
     steps:
       - id: release
         uses: google-github-actions/release-please-action@v3

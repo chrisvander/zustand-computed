@@ -144,8 +144,8 @@ const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]
 
 Other options include passing a `keys` array, which explicitly spell out the selectors which trigger re-computation. You can also pass a custom `equalityFn`, such as [fast-deep-equal](https://github.com/epoberezkin/fast-deep-equal) instead of the default `zustand/shallow`.
 
-[build-img]: https://github.com/chrisvander/zustand-computed/actions/workflows/release.yml/badge.svg
-[build-url]: https://github.com/chrisvander/zustand-computed/actions/workflows/release.yml
+[build-img]: https://github.com/chrisvander/zustand-computed/actions/workflows/ci.yml/badge.svg
+[build-url]: https://github.com/chrisvander/zustand-computed/actions/workflows/ci.yml
 [downloads-img]: https://img.shields.io/npm/dt/zustand-computed
 [downloads-url]: https://www.npmtrends.com/zustand-computed
 [npm-img]: https://img.shields.io/npm/v/zustand-computed

@@ -1,6 +1,7 @@
 # zustand-computed
 
-[![npm package][npm-img]][npm-url]
+[![NPM Package][npm-img]][npm-url]
+[![Bundle Size][size-img]][size-url]
 [![Build Status][build-img]][build-url]
 [![Downloads][downloads-img]][downloads-url]
 [![Issues][issues-img]][issues-url]
@@ -148,6 +149,8 @@ Other options include passing a `keys` array, which explicitly spell out the sel
 
 [build-img]: https://github.com/chrisvander/zustand-computed/actions/workflows/ci.yml/badge.svg
 [build-url]: https://github.com/chrisvander/zustand-computed/actions/workflows/ci.yml
+[size-img]: https://img.shields.io/bundlephobia/minzip/zustand-computed
+[size-url]: https://bundlephobia.com/package/zustand-computed@1.4.2
 [downloads-img]: https://img.shields.io/npm/dt/zustand-computed
 [downloads-url]: https://www.npmtrends.com/zustand-computed
 [npm-img]: https://img.shields.io/npm/v/zustand-computed

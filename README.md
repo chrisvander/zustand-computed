@@ -103,22 +103,24 @@ A fully-featured example can be found under the "example" directory.
 Here's an example with the Immer middleware.
 
 > [!WARNING]
-> Types may not be as you expect when using Immer, as it derives the SetState type from the output of GetState, where `zustand-computed` makes SetState only allow the regular Store and the GetState return both the store and the computed store. To access the ComputedStore inside Immer, you will need to assert the `Store` type as `Store & ComputedStore`.
+> Immer derives the SetState type from the output of GetState, where `zustand-computed` types SetState to allow only the regular Store and types GetState to return both the store and the computed store. To avoid this issue, you may need to apply Immer outside of `zustand-computed`. If `zustand-computed` must be outside of Immer, you will need to assert the `Store` type as `Store & ComputedStore`.
 
 ```ts
 const useStore = create<Store>()(
   devtools(
-    computed(
-      immer((set) => ({
-        count: 1,
-        inc: () =>
-          set((state) => {
-            // example with Immer middleware
-            state.count += 1
-          }),
-        dec: () => set((state) => ({ count: state.count - 1 })),
-      })),
-      computeState
+    immer(
+      computed(
+        (set) => ({
+          count: 1,
+          inc: () =>
+            set((state) => {
+              // example with Immer middleware
+              state.count += 1
+            }),
+          dec: () => set((state) => ({ count: state.count - 1 })),
+        }),
+        computeState
+      ),
     )
   )
 )

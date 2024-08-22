@@ -1,4 +1,4 @@
-import { StateCreator, StoreApi, StoreMutatorIdentifier, Mutate } from "zustand"
+import type { Mutate, StateCreator, StoreApi, StoreMutatorIdentifier } from "zustand"
 import { shallow } from "zustand/shallow"
 
 export type ComputedStateOpts<T> = {

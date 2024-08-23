@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/chrisvander/zustand-computed/compare/v1.4.2...v2.0.0) (2024-08-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* replace `computed` middleware with `createComputed` function
+
+### Features
+
+* replace `computed` middleware with `createComputed` function ([db30ae9](https://github.com/chrisvander/zustand-computed/commit/db30ae959fa67e13f527141ff9181521eb515367))
+
 ## [1.4.2](https://github.com/chrisvander/zustand-computed/compare/v1.4.1...v1.4.2) (2024-08-22)
 
 

@@ -25,7 +25,7 @@ The middleware layer takes in your store creation function and a compute functio
 ```js
 import { createComputed } from "zustand-computed"
 
-const computeState = createComputed(state) => ({
+const computeState = createComputed((state) => ({
   countSq: state.count ** 2,
 }))
 
@@ -114,8 +114,8 @@ const useStore = create<Store>()(
               state.count += 1
             }),
           dec: () => set((state) => ({ count: state.count - 1 })),
-        }),
-      ),
+        })
+      )
     )
   )
 )
@@ -133,7 +133,7 @@ const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]
       count: 1,
       inc: () => set((state) => ({ count: state.count + 1 })),
       dec: () => set((state) => ({ count: state.count - 1 })),
-    }),
+    })
   )
 )
 ```

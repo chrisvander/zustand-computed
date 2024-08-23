@@ -23,7 +23,7 @@ yarn add zustand-computed
 The middleware layer takes in your store creation function and a compute function, which transforms your state into a computed state. It does not need to handle merging states.
 
 ```js
-import computed from "zustand-computed"
+import { createComputed } from "zustand-computed"
 
 const computeState = (state) => ({
   countSq: state.count ** 2,
@@ -47,7 +47,7 @@ const useStore = create(
 With types, the previous example would look like this:
 
 ```ts
-import computed from "zustand-computed"
+import { createComputed } from "zustand-computed"
 
 type Store = {
   count: number
@@ -59,11 +59,10 @@ type ComputedStore = {
   countSq: number
 }
 
-const computeState = (state: Store): ComputedStore => ({
+const computed = createComputed((state: Store): ComputedStore => ({
   countSq: state.count ** 2,
-})
+}))
 
-// use curried create
 const useStore = create<Store>()(
   computed(
     (set) => ({
@@ -73,8 +72,7 @@ const useStore = create<Store>()(
       // get() function has access to ComputedStore
       square: () => set(() => ({ count: get().countSq })),
       root: () => set((state) => ({ count: Math.floor(Math.sqrt(state.count)) })),
-    }),
-    computeState
+    })
   )
 )
 ```
@@ -103,10 +101,8 @@ A fully-featured example can be found under the "example" directory.
 
 Here's an example with the Immer middleware.
 
-> [!WARNING]
-> Immer derives the SetState type from the output of GetState, where `zustand-computed` types SetState to allow only the regular Store and types GetState to return both the store and the computed store. To avoid this issue, you may need to apply Immer outside of `zustand-computed`. If `zustand-computed` must be outside of Immer, you will need to assert the `Store` type as `Store & ComputedStore`.
-
 ```ts
+const computed = createComputed((state: Store) => { /* ... */ })
 const useStore = create<Store>()(
   devtools(
     immer(
@@ -120,7 +116,6 @@ const useStore = create<Store>()(
             }),
           dec: () => set((state) => ({ count: state.count - 1 })),
         }),
-        computeState
       ),
     )
   )
@@ -129,9 +124,10 @@ const useStore = create<Store>()(
 
 ## Selectors
 
-By default, when `zustand-computed` runs your `computeState` function, it tracks accessed variables and does not trigger a computation if one of those variables do not change. This could potentially be problematic if you have nested control flow inside of `computeState`, or perhaps you want it to run on _all_ changes regardless of use inside of `computeState`. To disable automatic selector detection, you can pass a third `opts` variable to the `computed` constructor, e.g.
+By default, when `zustand-computed` runs your `computeState` function, it tracks accessed variables and does not trigger a computation if one of those variables do not change. This could potentially be problematic if you have nested control flow inside of `computeState`, or perhaps you want it to run on _all_ changes regardless of use inside of `computeState`. To disable automatic selector detection, you can pass a second `opts` variable to the `createComputed` function, e.g.
 
 ```ts
+const computed = createComputed((state: Store) => { /* ... */ }, { disableProxy: true })
 const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(
   computed(
     (set) => ({
@@ -139,8 +135,6 @@ const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]
       inc: () => set((state) => ({ count: state.count + 1 })),
       dec: () => set((state) => ({ count: state.count - 1 })),
     }),
-    computeState,
-    { disableProxy: true }
   )
 )
 ```

@@ -22,7 +22,7 @@
   },
   "peerDependencies": {
     "react": "^18.2.0",
-    "zustand": "^4.3.8"
+    "zustand": "^5.0.0"
   },
   "exports": {
     ".": {

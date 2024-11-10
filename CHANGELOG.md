@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/chrisvander/zustand-computed/compare/v2.0.1...v2.0.2) (2024-11-10)
+
+
+### Miscellaneous Chores
+
+* release 2.0.2 ([8de1ae1](https://github.com/chrisvander/zustand-computed/commit/8de1ae1eb47d034efec1145b9d2d8a0f0827b437))
+
 ## [2.0.1](https://github.com/chrisvander/zustand-computed/compare/v2.0.0...v2.0.1) (2024-11-10)
 
 

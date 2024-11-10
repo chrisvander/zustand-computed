@@ -15,7 +15,9 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - run: bun i && bun test && bun run build
+      - run: bun i
+      - run: bun test
+      - run: bun run build
   release-please:
     name: Release Please
     runs-on: ubuntu-latest
@@ -37,6 +39,9 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - run: bunx npm publish
+          registry-url: https://registry.npmjs.org/
+      - run: bun i 
+      - run: bun run build 
+      - run: bun publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}

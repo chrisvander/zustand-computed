@@ -2,7 +2,10 @@
   "name": "zustand-computed",
   "version": "2.0.1",
   "author": "chrisvander",
-  "repository": "chrisvander/zustand-computed",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisvander/zustand-computed.git"
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "devDependencies": {

@@ -6,19 +6,19 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
-    "@commitlint/cli": "^19.4.0",
-    "@commitlint/config-conventional": "^19.2.2",
+    "@biomejs/biome": "^1.9.4",
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
     "@tsconfig/bun": "^1.0.7",
-    "@types/bun": "^1.1.6",
-    "@types/node": "^22.5.0",
-    "husky": "^9.1.5",
+    "@types/bun": "^1.1.13",
+    "@types/node": "^22.9.0",
+    "husky": "^9.1.6",
     "react": "^18.3.1",
     "semver": "^7.6.3",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.2",
-    "vite-plugin-dts": "^4.0.3",
-    "zustand": "^4.5.5"
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vite-plugin-dts": "^4.3.0",
+    "zustand": "^5.0.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -31,20 +31,8 @@
     }
   },
   "description": "A Zustand middleware to create computed states.",
-  "files": [
-    "/dist"
-  ],
-  "keywords": [
-    "zustand",
-    "computed",
-    "calculated",
-    "state",
-    "react",
-    "plugin",
-    "middleware",
-    "npm",
-    "typescript"
-  ],
+  "files": ["/dist"],
+  "keywords": ["zustand", "computed", "calculated", "state", "react", "plugin", "middleware", "npm", "typescript"],
   "license": "MIT",
   "scripts": {
     "check": "biome check --write",

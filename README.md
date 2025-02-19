@@ -94,8 +94,6 @@ function Counter() {
 }
 ```
 
-A fully-featured example can be found under the "example" directory.
-
 ## With Middleware
 
 Here's an example with the Immer middleware.

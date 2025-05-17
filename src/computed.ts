@@ -4,18 +4,43 @@ import { shallow } from "zustand/shallow"
 /**
  * Options for when and how your compute function is called.
  */
-export type ComputedStateOpts<T> = {
+export type ComputedStateOpts<T> = (
+  | {
+      /**
+       * An explicit list of keys to track for recomputation. By default,
+       * `zustand-computed` will run your compute function on any change.
+       * This lets you filter those keys out. It's better to use the
+       * `compareFn` to be more explicit about how comparison is determined.
+       */
+      keys?: (keyof T)[]
+    }
+  | {
+      /**
+       * Custom comparison function to determine whether to recompute.
+       * Receives the previous and next store state, should return true if
+       * compute should run, false to skip recomputation. This function
+       * should be *fast* - it determines whether or not you need to
+       * recompute.
+       */
+      shouldRecompute?: (state: T, nextState: T) => boolean
+    }
+) & {
   /**
-   * An explicit list of keys to track for recomputation.
-   */
-  keys?: (keyof T)[]
-  /**
-   * Disable the use of Proxy for tracking.
+   * @deprecated removed proxy; this does nothing and will be removed.
    */
   disableProxy?: boolean
   /**
    * Custom equality function for comparing computed values. By default, we use
-   * `zustand/shallow` to compare the stor
+   * `zustand/shallow` to compare each key in your store against the newly-
+   * computed values. This is likely the desired method of comparison.
+   *
+   * The motivation for this function is to ensure that, in the case your
+   * computed function returns a value that is identical structurally, it
+   * should not cause a re-render despite the reference being different.
+   *
+   * You can disable comparison, so that the most recent result of the
+   * compute function always triggers downstream re-renders, by simply
+   * returning false.
    */
   equalityFn?: <Y>(a: Y, b: Y) => boolean
 }
@@ -56,40 +81,27 @@ type SetStateWithArgs = Parameters<ReturnType<ReturnType<ComputedStateImpl>>>[0]
   : never
 
 const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
-  // Set of keys that have been accessed in any compute call.
-  const trackedSelectors = new Set<string | number | symbol>()
-  return (set, get, api) => {
-    type T = ReturnType<typeof f>
-    type A = ReturnType<typeof compute>
+  type T = ReturnType<typeof f>
+  type A = ReturnType<typeof compute>
 
+  const optsKeys = !opts || !("keys" in opts) || opts.keys == null ? undefined : opts.keys
+  const keysSet = optsKeys ? new Set(optsKeys as string[]) : undefined
+
+  function defaultShouldRecomputeFn<T>(_: T, nextState: T): boolean {
+    if (!keysSet || nextState == null) return true
+    return Object.keys(nextState).some((k) => keysSet.has(k))
+  }
+
+  const shouldRecomputeFn =
+    opts && "shouldRecompute" in opts ? (opts.shouldRecompute ?? defaultShouldRecomputeFn) : defaultShouldRecomputeFn
+
+  // Set of keys that have been accessed in any compute call.
+  return (set, get, api) => {
     const equalityFn = opts?.equalityFn ?? shallow
 
-    if (opts?.keys) {
-      const selectorKeys = opts.keys
-      for (const key of selectorKeys) {
-        trackedSelectors.add(key)
-      }
-    }
-
-    // Determine if selectors or proxy should be used.
-    const useSelectors = opts?.disableProxy !== true || !!opts?.keys
-    const useProxy = opts?.disableProxy !== true && !opts?.keys
-
     const computeAndMerge = (state: T | (T & A)): T & A => {
-      // Create a Proxy to track which selectors are accessed.
-      const createStateProxy = () =>
-        new Proxy(
-          { ...state },
-          {
-            get: (_, prop) => {
-              trackedSelectors.add(prop)
-              return state[prop as keyof T]
-            },
-          },
-        )
-
       // Calculate the new computed state.
-      const computedState: A = compute(useProxy ? createStateProxy() : { ...state })
+      const computedState: A = compute({ ...state })
 
       // If part of the computed state did not change according to the equalityFn,
       // then delete that key from the newly calculated computed state.
@@ -109,16 +121,7 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
       ;(set as SetStateWithArgs)(
         (state: T): T & A => {
           const updated = typeof update === "object" ? update : update(state)
-
-          if (
-            useSelectors &&
-            trackedSelectors.size !== 0 &&
-            !Object.keys(updated).some((k) => trackedSelectors.has(k))
-          ) {
-            // If we have a selector set, but none of the updated keys are in the selector set, then we can skip the compute.
-            return { ...state, ...updated } as T & A
-          }
-
+          if (!shouldRecomputeFn?.(state, updated)) return { ...state, ...updated } as T & A
           return computeAndMerge({ ...state, ...updated })
         },
         replace,

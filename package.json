@@ -24,8 +24,8 @@
     "zustand": "^5.0.0"
   },
   "peerDependencies": {
-    "react": "^18.2.0 || ^19.0.0",
-    "zustand": "^5.0.0"
+    "react": ">=18.2.0 <20.0.0",
+    "zustand": ">=5.0.0 <6.0.0"
   },
   "exports": {
     ".": {
@@ -34,20 +34,8 @@
     }
   },
   "description": "A Zustand middleware to create computed states.",
-  "files": [
-    "/dist"
-  ],
-  "keywords": [
-    "zustand",
-    "computed",
-    "calculated",
-    "state",
-    "react",
-    "plugin",
-    "middleware",
-    "npm",
-    "typescript"
-  ],
+  "files": ["/dist"],
+  "keywords": ["zustand", "computed", "calculated", "state", "react", "plugin", "middleware", "npm", "typescript"],
   "license": "MIT",
   "scripts": {
     "check": "biome check --write",

@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.0](https://github.com/chrisvander/zustand-computed/compare/v2.0.2...v2.1.0) (2025-05-17)
+
+
+### Bug Fixes
+
+* refactor, add docs, remove proxy (bad default behavior) ([a41e42c](https://github.com/chrisvander/zustand-computed/commit/a41e42c5a61751f3fcc8be59da0cbcc100bd013c))
+
+
+### Miscellaneous Chores
+
+* release 2.1.0 ([d004343](https://github.com/chrisvander/zustand-computed/commit/d00434397228658647479a77f4b8edcd99343d03))
+* release 2.1.0 ([10fd7bc](https://github.com/chrisvander/zustand-computed/commit/10fd7bc69d79a2c3126855a30bf165579d914e8d))
+
 ## [2.0.2](https://github.com/chrisvander/zustand-computed/compare/v2.0.1...v2.0.2) (2024-11-10)
 
 

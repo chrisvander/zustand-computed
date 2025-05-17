@@ -1,6 +1,6 @@
 {
   "name": "zustand-computed",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "author": "chrisvander",
   "repository": {
     "type": "git",
@@ -36,8 +36,20 @@
     }
   },
   "description": "A Zustand middleware to create computed states.",
-  "files": ["/dist"],
-  "keywords": ["zustand", "computed", "calculated", "state", "react", "plugin", "middleware", "npm", "typescript"],
+  "files": [
+    "/dist"
+  ],
+  "keywords": [
+    "zustand",
+    "computed",
+    "calculated",
+    "state",
+    "react",
+    "plugin",
+    "middleware",
+    "npm",
+    "typescript"
+  ],
   "license": "MIT",
   "scripts": {
     "check": "biome check --write",

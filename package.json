@@ -8,6 +8,7 @@
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@commitlint/cli": "^19.5.0",
@@ -30,7 +31,8 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.mjs"
+      "require": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     }
   },
   "description": "A Zustand middleware to create computed states.",

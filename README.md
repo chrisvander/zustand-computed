@@ -119,12 +119,17 @@ const useStore = create<Store>()(
 )
 ```
 
-## Selectors
+## Skip Computation
 
-By default, when `zustand-computed` runs your `computeState` function, it tracks accessed variables and does not trigger a computation if one of those variables do not change. This could potentially be problematic if you have nested control flow inside of `computeState`, or perhaps you want it to run on _all_ changes regardless of use inside of `computeState`. To disable automatic selector detection, you can pass a second `opts` variable to the `createComputed` function, e.g.
+By default, your compute function runs every time the store changes. If you use slices, it will only run inside of the particular slice that changes. For simple functions, this may not make a big difference. If you want to skip computation, you've got two options: a `keys` array, or a `shouldRecompute` function. Both can be passed in the opts, like below:
 
 ```ts
-const computed = createComputed((state: Store) => { /* ... */ }, { disableProxy: true })
+// only recomputes when "count" changes
+const computed = createComputed((state: Store) => { /* ... */ }, { keys: ["count"] })
+// only recomputes when the current state's count does not equal the next state's count (same as above, but more explicit)
+const computedWithShouldRecomputeFn = createComputed((state: Store) => { /* ... */ }, { shouldRecompute: (state, nextState) => {
+  return state.count !== nextState.count
+} })
 const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(
   computed(
     (set) => ({
@@ -136,7 +141,9 @@ const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]
 )
 ```
 
-Other options include passing a `keys` array, which explicitly spell out the selectors which trigger re-computation. You can also pass a custom `equalityFn`, such as [fast-deep-equal](https://github.com/epoberezkin/fast-deep-equal) instead of the default `zustand/shallow`.
+# Memoization
+
+`zustand-computed` ensures that, if a newly-computed value is equal to the previous value, it will prevent the reference from changing so your components don't have unnecessary re-renders. You can customize this behavior with an optional `equalityFn`, such as [fast-deep-equal](https://github.com/epoberezkin/fast-deep-equal). By default, it uses `zustand/shallow` to compare values, but if you have a deeply nested state you may want to reach for something more powerful.
 
 [build-img]: https://github.com/chrisvander/zustand-computed/actions/workflows/ci.yml/badge.svg
 [build-url]: https://github.com/chrisvander/zustand-computed/actions/workflows/ci.yml

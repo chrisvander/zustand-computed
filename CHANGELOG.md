@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/chrisvander/zustand-computed/compare/v2.1.0...v2.1.1) (2025-10-22)
+
+
+### Bug Fixes
+
+* immer middleware throwing ([a599978](https://github.com/chrisvander/zustand-computed/commit/a5999784857045aba26f73e8aad5d4dfcb9241b4))
+
 ## [2.1.0](https://github.com/chrisvander/zustand-computed/compare/v2.0.2...v2.1.0) (2025-05-17)
 
 

@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, mock, test } from "bun:test"
 import { type StateCreator, create } from "zustand"
+import { immer } from "zustand/middleware/immer"
 import { type ComputedStateOpts, createComputed } from "./computed"
 
 type Store = {
@@ -195,4 +196,44 @@ describe("slices pattern", () => {
     expect(useStore.getState().countSq).toEqual(16)
     expect(computeSliceMock).toHaveBeenCalledTimes(3)
   })
+})
+
+describe("immer middleware functions without throwing", () => {
+  type Store = {
+    count: number
+    inc: () => void
+    dec: () => void
+  }
+
+  type ComputedStore = {
+    countSq: number
+  }
+
+  const computed = createComputed(
+    (state: Store): ComputedStore => ({
+      countSq: state.count ** 2,
+    }),
+    { keys: ["count"] },
+  )
+
+  const useStore = create<Store>()(
+    immer(
+      computed((set) => ({
+        count: 1,
+        inc: () =>
+          set((state) => {
+            // example with Immer middleware
+            state.count += 1
+          }),
+        dec: () => set((state) => ({ count: state.count - 1 })),
+      })),
+    ),
+  )
+
+  expect(() => useStore.getState().inc()).not.toThrow()
+  expect(useStore.getState().count).toEqual(2)
+  expect(useStore.getState().countSq).toEqual(4)
+  expect(() => useStore.getState().dec()).not.toThrow()
+  expect(useStore.getState().count).toEqual(1)
+  expect(useStore.getState().countSq).toEqual(1)
 })

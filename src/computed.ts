@@ -22,7 +22,7 @@ export type ComputedStateOpts<T> = (
        * should be *fast* - it determines whether or not you need to
        * recompute.
        */
-      shouldRecompute?: (state: T, nextState: T) => boolean
+      shouldRecompute?: (state: T, nextState: T | Partial<T>) => boolean
     }
 ) & {
   /**
@@ -76,10 +76,6 @@ type ComputedStateImpl = <T extends object, A extends object>(
   opts?: ComputedStateOpts<T>,
 ) => (f: StateCreator<T, [], []>) => StateCreator<T, [], [], T & A>
 
-type SetStateWithArgs = Parameters<ReturnType<ReturnType<ComputedStateImpl>>>[0] extends (...args: infer U) => void
-  ? (...args: [...U, ...unknown[]]) => void
-  : never
-
 const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
   type T = ReturnType<typeof f>
   type A = ReturnType<typeof compute>
@@ -87,7 +83,7 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
   const optsKeys = !opts || !("keys" in opts) || opts.keys == null ? undefined : opts.keys
   const keysSet = optsKeys ? new Set(optsKeys as string[]) : undefined
 
-  function defaultShouldRecomputeFn<T>(_: T, nextState: T): boolean {
+  function defaultShouldRecomputeFn<T>(_: T, nextState: T | Partial<T>): boolean {
     if (!keysSet || nextState == null) return true
     return Object.keys(nextState).some((k) => keysSet.has(k))
   }
@@ -99,39 +95,49 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
   return (set, get, api) => {
     const equalityFn = opts?.equalityFn ?? shallow
 
-    const computeAndMerge = (state: T | (T & A)): T & A => {
+    function computeAndMerge(state: T | (T & A)): T & A {
       // Calculate the new computed state.
-      const computedState: A = compute({ ...state })
+      const computedState = compute(state)
 
       // If part of the computed state did not change according to the equalityFn,
       // then delete that key from the newly calculated computed state.
       for (const k of Object.keys(computedState) as (keyof A)[]) {
-        if (equalityFn(computedState[k], (state as T & A)[k])) {
+        if (k in state && equalityFn(computedState[k], (state as T & A)[k])) {
           delete computedState[k]
         }
       }
 
-      return { ...state, ...computedState }
+      return Object.assign(state, computedState)
     }
+
+    const _api = api as Mutate<StoreApi<T>, [["chrisvander/zustand-computed", A]]>
 
     /**
      * Higher level function to handle compute & compare overhead.
      */
-    const setWithComputed = (update: T | ((state: T) => T), replace?: boolean, ...args: unknown[]) => {
-      ;(set as SetStateWithArgs)(
-        (state: T): T & A => {
-          const updated = typeof update === "object" ? update : update(state)
-          if (!shouldRecomputeFn?.(state, updated)) return { ...state, ...updated } as T & A
-          return computeAndMerge({ ...state, ...updated })
-        },
-        replace,
-        ...args,
-      )
+    function setState(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
+    function setState(state: T | ((state: T) => T), replace: true): void
+    function setState(arg: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: boolean): void {
+      if (replace === false || replace == null) {
+        // Merge the partial state with the current state.
+        set((state) => {
+          const newState = typeof arg === "function" ? arg(state) : arg
+          if (!shouldRecomputeFn(state, newState)) return newState
+          return computeAndMerge(Object.assign(state, newState))
+        }, replace)
+        return
+      }
+
+      set((state) => {
+        const newArg = arg as T | ((state: T) => T)
+        const newState: T = typeof newArg === "function" ? newArg(state) : newArg
+        if (!shouldRecomputeFn(state, newState)) return newState
+        return computeAndMerge(newState)
+      }, replace)
     }
 
-    const _api = api as Mutate<StoreApi<T>, [["chrisvander/zustand-computed", A]]>
-    _api.setState = setWithComputed
-    const st = f(setWithComputed, get, _api) as T & A
+    _api.setState = setState
+    const st = f(setState, get, _api)
     return Object.assign({}, st, compute(st))
   }
 }

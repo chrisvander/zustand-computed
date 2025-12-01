@@ -1,5 +1,9 @@
 name: Test & Build
 
+permissions: 
+  id-token: write
+  contents: read
+
 on:
   push:
     branches: ["main"]
@@ -43,5 +47,3 @@ jobs:
       - run: bun i 
       - run: bun run build 
       - run: bun publish
-        env:
-          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}

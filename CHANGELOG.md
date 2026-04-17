@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/chrisvander/zustand-computed/compare/v2.1.1...v2.1.2) (2026-04-17)
+
+
+### Bug Fixes
+
+* revert object assign to spread while handling immer compat ([b87f89c](https://github.com/chrisvander/zustand-computed/commit/b87f89cd562a359dc8e3ea2a0e6201194948f821))
+
 ## [2.1.1](https://github.com/chrisvander/zustand-computed/compare/v2.1.0...v2.1.1) (2025-10-22)
 
 

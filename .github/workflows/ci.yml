@@ -44,7 +44,10 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-          registry-url: https://registry.npmjs.org/
       - run: bun i 
       - run: bun run build 
-      - run: bunx npm publish
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+      - run: npm publish --access public

@@ -95,7 +95,7 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
   return (set, get, api) => {
     const equalityFn = opts?.equalityFn ?? shallow
 
-    function computeAndMerge(state: T | (T & A), mutate = false): T & A {
+    function computeAndMerge(state: T | (T & A), shouldMutate = false): T & A {
       // Calculate the new computed state.
       const computedState = compute(state)
 
@@ -107,7 +107,7 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
         }
       }
 
-      return mutate ? Object.assign(state, computedState) : { ...state, ...computedState }
+      return shouldMutate ? Object.assign(state, computedState) : { ...state, ...computedState }
     }
 
     const _api = api as Mutate<StoreApi<T>, [["chrisvander/zustand-computed", A]]>
@@ -123,7 +123,11 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
         set((state) => {
           const newState = typeof arg === "function" ? arg(state) : arg
           if (!shouldRecomputeFn(state, newState)) return newState
-          if (typeof arg === "function" && newState === undefined) return computeAndMerge(state, true)
+          if (typeof arg === "function" && newState === undefined) {
+            // Immer producers mutate the existing draft and return `undefined`.
+            // In that flow we must mutate in place rather than returning a new object.
+            return computeAndMerge(state, true)
+          }
           return computeAndMerge({ ...state, ...newState })
         }, replace)
         return

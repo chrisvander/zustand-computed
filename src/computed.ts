@@ -95,7 +95,7 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
   return (set, get, api) => {
     const equalityFn = opts?.equalityFn ?? shallow
 
-    function computeAndMerge(state: T | (T & A), shouldMutate = false): T & A {
+    function computeAndMerge(state: T | (T & A), mutateInPlace = false): T & A {
       // Calculate the new computed state.
       const computedState = compute(state)
 
@@ -107,7 +107,7 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
         }
       }
 
-      return shouldMutate ? Object.assign(state, computedState) : { ...state, ...computedState }
+      return mutateInPlace ? Object.assign(state, computedState) : { ...state, ...computedState }
     }
 
     const _api = api as Mutate<StoreApi<T>, [["chrisvander/zustand-computed", A]]>

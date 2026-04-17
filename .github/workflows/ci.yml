@@ -2,7 +2,8 @@ name: Test & Build
 
 permissions: 
   id-token: write
-  contents: read
+  contents: write
+  pull-requests: write
 
 on:
   push:

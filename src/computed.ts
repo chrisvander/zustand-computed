@@ -107,7 +107,7 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
         }
       }
 
-      return Object.assign(state, computedState)
+      return { ...state, ...computedState }
     }
 
     const _api = api as Mutate<StoreApi<T>, [["chrisvander/zustand-computed", A]]>
@@ -123,7 +123,7 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
         set((state) => {
           const newState = typeof arg === "function" ? arg(state) : arg
           if (!shouldRecomputeFn(state, newState)) return newState
-          return computeAndMerge(Object.assign(state, newState))
+          return computeAndMerge({ ...state, ...newState })
         }, replace)
         return
       }
@@ -138,7 +138,7 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
 
     _api.setState = setState
     const st = f(setState, get, _api)
-    return Object.assign({}, st, compute(st))
+    return { ...st, ...compute(st) }
   }
 }
 

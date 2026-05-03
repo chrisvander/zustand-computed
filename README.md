@@ -148,7 +148,7 @@ const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]
 [build-img]: https://github.com/chrisvander/zustand-computed/actions/workflows/ci.yml/badge.svg
 [build-url]: https://github.com/chrisvander/zustand-computed/actions/workflows/ci.yml
 [size-img]: https://img.shields.io/bundlephobia/minzip/zustand-computed
-[size-url]: https://bundlephobia.com/package/zustand-computed@1.4.2
+[size-url]: https://bundlephobia.com/package/zustand-computed
 [downloads-img]: https://img.shields.io/npm/dt/zustand-computed
 [downloads-url]: https://www.npmtrends.com/zustand-computed
 [npm-img]: https://img.shields.io/npm/v/zustand-computed

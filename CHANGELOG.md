@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.1.3](https://github.com/chrisvander/zustand-computed/compare/v2.1.2...v2.1.3) (2026-05-10)
+
+### Bug Fixes
+
+- preserve subscribeWithSelector's enhanced subscribe type in computed middleware ([#76](https://github.com/chrisvander/zustand-computed/issues/76)) ([c302f1a](https://github.com/chrisvander/zustand-computed/commit/c302f1a833c2696021e71a0c5bcbaa4609a7e4c8))
+
 ## [2.1.2](https://github.com/chrisvander/zustand-computed/compare/v2.1.1...v2.1.2) (2026-04-17)
 
 ### Bug Fixes

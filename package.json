@@ -1,61 +1,57 @@
 {
   "name": "zustand-computed",
   "version": "2.1.3",
+  "description": "A Zustand middleware to create computed states.",
+  "keywords": [
+    "calculated",
+    "computed",
+    "middleware",
+    "npm",
+    "plugin",
+    "react",
+    "state",
+    "typescript",
+    "zustand"
+  ],
+  "license": "MIT",
   "author": "chrisvander",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chrisvander/zustand-computed.git"
   },
-  "main": "dist/index.js",
+  "files": [
+    "/dist"
+  ],
+  "type": "module",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.cjs",
+      "require": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    }
+  },
+  "scripts": {
+    "fmt:check": "oxfmt --check",
+    "fmt": "oxfmt",
+    "lint": "oxlint",
+    "build": "tsdown"
+  },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@commitlint/cli": "^19.5.0",
-    "@commitlint/config-conventional": "^19.5.0",
     "@tsconfig/bun": "^1.0.7",
     "@types/bun": "^1.1.13",
-    "@types/node": "^22.9.0",
-    "husky": "^9.1.6",
     "immer": "^10.1.3",
-    "react": "^18.3.1",
+    "oxfmt": "^0.48.0",
+    "oxlint": "^1.63.0",
+    "oxlint-tsgolint": "^0.22.1",
     "semver": "^7.6.3",
-    "typescript": "^5.6.3",
-    "vite": "^5.4.10",
-    "vite-plugin-dts": "^4.3.0",
-    "zustand": "^5.0.0"
+    "tsdown": "^0.22.0",
+    "typescript": "^5.6.3"
   },
   "peerDependencies": {
     "react": ">=18.2.0 <20.0.0",
     "zustand": ">=5.0.0 <6.0.0"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
-  "description": "A Zustand middleware to create computed states.",
-  "files": [
-    "/dist"
-  ],
-  "keywords": [
-    "zustand",
-    "computed",
-    "calculated",
-    "state",
-    "react",
-    "plugin",
-    "middleware",
-    "npm",
-    "typescript"
-  ],
-  "license": "MIT",
-  "scripts": {
-    "check": "biome check --write",
-    "format": "biome format --write",
-    "lint": "biome lint",
-    "build": "vite build"
   }
 }

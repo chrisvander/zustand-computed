@@ -89,7 +89,9 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
   }
 
   const shouldRecomputeFn =
-    opts && "shouldRecompute" in opts ? (opts.shouldRecompute ?? defaultShouldRecomputeFn) : defaultShouldRecomputeFn
+    opts && "shouldRecompute" in opts
+      ? (opts.shouldRecompute ?? defaultShouldRecomputeFn)
+      : defaultShouldRecomputeFn
 
   // Set of keys that have been accessed in any compute call.
   return (set, get, api) => {
@@ -115,9 +117,15 @@ const computedImpl: ComputedStateImpl = (compute, opts) => (f) => {
     /**
      * Higher level function to handle compute & compare overhead.
      */
-    function setState(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
+    function setState(
+      partial: T | Partial<T> | ((state: T) => T | Partial<T>),
+      replace?: false,
+    ): void
     function setState(state: T | ((state: T) => T), replace: true): void
-    function setState(arg: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: boolean): void {
+    function setState(
+      arg: T | Partial<T> | ((state: T) => T | Partial<T>),
+      replace?: boolean,
+    ): void {
       if (replace === false || replace == null) {
         // Merge the partial state with the current state.
         set((state) => {

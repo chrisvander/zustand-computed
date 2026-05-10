@@ -30,16 +30,14 @@ const computed = createComputed((state) => ({
 }))
 
 const useStore = create(
-  computed(
-    (set, get) => ({
-      count: 1,
-      inc: () => set((state) => ({ count: state.count + 1 })),
-      dec: () => set((state) => ({ count: state.count - 1 })),
-      // get() function has access to ComputedStore
-      square: () => set(() => ({ count: get().countSq })),
-      root: () => set((state) => ({ count: Math.floor(Math.sqrt(state.count)) })),
-    })
-  )
+  computed((set, get) => ({
+    count: 1,
+    inc: () => set((state) => ({ count: state.count + 1 })),
+    dec: () => set((state) => ({ count: state.count - 1 })),
+    // get() function has access to ComputedStore
+    square: () => set(() => ({ count: get().countSq })),
+    root: () => set((state) => ({ count: Math.floor(Math.sqrt(state.count)) })),
+  })),
 )
 ```
 
@@ -58,21 +56,21 @@ type ComputedStore = {
   countSq: number
 }
 
-const computed = createComputed((state: Store): ComputedStore => ({
-  countSq: state.count ** 2,
-}))
+const computed = createComputed(
+  (state: Store): ComputedStore => ({
+    countSq: state.count ** 2,
+  }),
+)
 
 const useStore = create<Store>()(
-  computed(
-    (set) => ({
-      count: 1,
-      inc: () => set((state) => ({ count: state.count + 1 })),
-      dec: () => set((state) => ({ count: state.count - 1 })),
-      // get() function has access to ComputedStore
-      square: () => set(() => ({ count: get().countSq })),
-      root: () => set((state) => ({ count: Math.floor(Math.sqrt(state.count)) })),
-    })
-  )
+  computed((set) => ({
+    count: 1,
+    inc: () => set((state) => ({ count: state.count + 1 })),
+    dec: () => set((state) => ({ count: state.count - 1 })),
+    // get() function has access to ComputedStore
+    square: () => set(() => ({ count: get().countSq })),
+    root: () => set((state) => ({ count: Math.floor(Math.sqrt(state.count)) })),
+  })),
 )
 ```
 
@@ -99,23 +97,23 @@ function Counter() {
 Here's an example with the Immer middleware.
 
 ```ts
-const computed = createComputed((state: Store) => { /* ... */ })
+const computed = createComputed((state: Store) => {
+  /* ... */
+})
 const useStore = create<Store>()(
   devtools(
     immer(
-      computed(
-        (set) => ({
-          count: 1,
-          inc: () =>
-            set((state) => {
-              // example with Immer middleware
-              state.count += 1
-            }),
-          dec: () => set((state) => ({ count: state.count - 1 })),
-        })
-      )
-    )
-  )
+      computed((set) => ({
+        count: 1,
+        inc: () =>
+          set((state) => {
+            // example with Immer middleware
+            state.count += 1
+          }),
+        dec: () => set((state) => ({ count: state.count - 1 })),
+      })),
+    ),
+  ),
 )
 ```
 
@@ -125,19 +123,29 @@ By default, your compute function runs every time the store changes. If you use 
 
 ```ts
 // only recomputes when "count" changes
-const computed = createComputed((state: Store) => { /* ... */ }, { keys: ["count"] })
+const computed = createComputed(
+  (state: Store) => {
+    /* ... */
+  },
+  { keys: ["count"] },
+)
 // only recomputes when the current state's count does not equal the next state's count (same as above, but more explicit)
-const computedWithShouldRecomputeFn = createComputed((state: Store) => { /* ... */ }, { shouldRecompute: (state, nextState) => {
-  return state.count !== nextState.count
-} })
+const computedWithShouldRecomputeFn = createComputed(
+  (state: Store) => {
+    /* ... */
+  },
+  {
+    shouldRecompute: (state, nextState) => {
+      return state.count !== nextState.count
+    },
+  },
+)
 const useStore = create<Store, [["chrisvander/zustand-computed", ComputedStore]]>(
-  computed(
-    (set) => ({
-      count: 1,
-      inc: () => set((state) => ({ count: state.count + 1 })),
-      dec: () => set((state) => ({ count: state.count - 1 })),
-    })
-  )
+  computed((set) => ({
+    count: 1,
+    inc: () => set((state) => ({ count: state.count + 1 })),
+    dec: () => set((state) => ({ count: state.count - 1 })),
+  })),
 )
 ```
 

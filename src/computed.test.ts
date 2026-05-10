@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, mock, test } from "bun:test"
 import { type StateCreator, create } from "zustand"
 import { immer } from "zustand/middleware/immer"
+import { subscribeWithSelector } from "zustand/middleware"
 import { type ComputedStateOpts, createComputed } from "./computed"
 
 type Store = {
@@ -237,5 +238,53 @@ describe("immer", () => {
     expect(() => useStore.getState().dec()).not.toThrow()
     expect(useStore.getState().count).toEqual(1)
     expect(useStore.getState().countSq).toEqual(1)
+  })
+})
+
+describe("subscribeWithSelector", () => {
+  test("subscribeWithSelector works with computed and allows selector-based subscriptions", () => {
+    type Store = {
+      count: number
+      inc: () => void
+    }
+
+    type ComputedStore = {
+      countSq: number
+    }
+
+    const computed = createComputed(
+      (state: Store): ComputedStore => ({
+        countSq: state.count ** 2,
+      }),
+    )
+
+    const useStore = create<Store>()(
+      computed(
+        subscribeWithSelector((set) => ({
+          count: 1,
+          inc: () => set((state) => ({ count: state.count + 1 })),
+        })),
+      ),
+    )
+
+    const listener = mock((_countSq: number) => {})
+    // This should compile and work: subscribe with a selector
+    const unsub = useStore.subscribe(
+      (state) => state.countSq,
+      (countSq) => listener(countSq),
+    )
+
+    useStore.getState().inc()
+    expect(listener).toHaveBeenCalledTimes(1)
+    expect(listener).toHaveBeenCalledWith(4)
+
+    useStore.getState().inc()
+    expect(listener).toHaveBeenCalledTimes(2)
+    expect(listener).toHaveBeenCalledWith(9)
+
+    unsub()
+    useStore.getState().inc()
+    // listener should not be called after unsubscribing
+    expect(listener).toHaveBeenCalledTimes(2)
   })
 })

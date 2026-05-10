@@ -61,7 +61,7 @@ type Write<T, U> = Omit<T, keyof U> & U
 type StoreCompute<S, A> = S extends {
   getState: () => infer T
 }
-  ? Omit<StoreApi<T & A>, "setState">
+  ? Pick<StoreApi<T & A>, "getState" | "getInitialState">
   : never
 type WithCompute<S, A> = Write<S, StoreCompute<S, A>>
 

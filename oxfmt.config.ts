@@ -1,6 +1,6 @@
-import { defineConfig } from "oxfmt"
+import { defineConfig } from "oxfmt";
 
 export default defineConfig({
-  semi: false,
-  ignorePatterns: ["src/lexicons/**/*", "lexicons/**/*"],
-})
+	semi: false,
+	ignorePatterns: ["src/lexicons/**/*", "lexicons/**/*", "CHANGELOG.md"],
+});

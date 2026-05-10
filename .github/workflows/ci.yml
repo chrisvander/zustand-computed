@@ -1,6 +1,6 @@
 name: Test & Build
 
-permissions: 
+permissions:
   id-token: write
   contents: write
   pull-requests: write
@@ -21,8 +21,10 @@ jobs:
         with:
           bun-version: latest
       - run: bun i
+      - run: bun --bun lint
+      - run: bun --bun fmt:check
       - run: bun test
-      - run: bun run build
+      - run: bun --bun run build
   release-please:
     name: Release Please
     runs-on: ubuntu-latest
@@ -44,8 +46,8 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - run: bun i 
-      - run: bun run build 
+      - run: bun i
+      - run: bun --bun run build
       - uses: actions/setup-node@v6
         with:
           node-version: 24

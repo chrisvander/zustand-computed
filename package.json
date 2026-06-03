@@ -48,7 +48,7 @@
     "oxlint-tsgolint": "^0.23.0",
     "semver": "^7.6.3",
     "tsdown": "^0.22.0",
-    "typescript": "^5.6.3"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "react": ">=18.2.0 <20.0.0",

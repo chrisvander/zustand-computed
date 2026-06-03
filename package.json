@@ -1,55 +1,57 @@
 {
-	"name": "zustand-computed",
-	"version": "2.1.3",
-	"description": "A Zustand middleware to create computed states.",
-	"keywords": [
-		"calculated",
-		"computed",
-		"middleware",
-		"npm",
-		"plugin",
-		"react",
-		"state",
-		"typescript",
-		"zustand"
-	],
-	"license": "MIT",
-	"author": "chrisvander",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/chrisvander/zustand-computed.git"
-	},
-	"files": ["/dist"],
-	"type": "module",
-	"main": "dist/index.cjs",
-	"module": "dist/index.mjs",
-	"types": "dist/index.d.mts",
-	"exports": {
-		".": {
-			"import": "./dist/index.mjs",
-			"require": "./dist/index.cjs",
-			"types": "./dist/index.d.mts"
-		}
-	},
-	"scripts": {
-		"fmt:check": "oxfmt --check",
-		"fmt": "oxfmt",
-		"lint": "oxlint",
-		"build": "tsdown"
-	},
-	"devDependencies": {
-		"@tsconfig/bun": "^1.0.7",
-		"@types/bun": "^1.1.13",
-		"immer": "^11.1.8",
-		"oxfmt": "^0.53.0",
-		"oxlint": "^1.63.0",
-		"oxlint-tsgolint": "^0.23.0",
-		"semver": "^7.6.3",
-		"tsdown": "^0.22.0",
-		"typescript": "^6.0.3"
-	},
-	"peerDependencies": {
-		"react": ">=18.2.0 <20.0.0",
-		"zustand": ">=5.0.0 <6.0.0"
-	}
+  "name": "zustand-computed",
+  "version": "2.1.3",
+  "description": "A Zustand middleware to create computed states.",
+  "keywords": [
+    "calculated",
+    "computed",
+    "middleware",
+    "npm",
+    "plugin",
+    "react",
+    "state",
+    "typescript",
+    "zustand"
+  ],
+  "license": "MIT",
+  "author": "chrisvander",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisvander/zustand-computed.git"
+  },
+  "files": [
+    "/dist"
+  ],
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.mts"
+    }
+  },
+  "scripts": {
+    "fmt:check": "oxfmt --check",
+    "fmt": "oxfmt",
+    "lint": "oxlint",
+    "build": "tsdown"
+  },
+  "devDependencies": {
+    "@tsconfig/bun": "^1.0.7",
+    "@types/bun": "^1.1.13",
+    "immer": "^11.1.8",
+    "oxfmt": "^0.53.0",
+    "oxlint": "^1.63.0",
+    "oxlint-tsgolint": "^0.23.0",
+    "semver": "^7.6.3",
+    "tsdown": "^0.22.0",
+    "typescript": "^6.0.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0 <20.0.0",
+    "zustand": ">=5.0.0 <6.0.0"
+  }
 }

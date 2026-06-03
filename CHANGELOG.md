@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.4](https://github.com/chrisvander/zustand-computed/compare/v2.1.3...v2.1.4) (2026-06-03)
+
+
+### Bug Fixes
+
+* export declarations ([9f3c542](https://github.com/chrisvander/zustand-computed/commit/9f3c542d256354bfc364cbc09ec1ed4849c27788))
+
 ## [2.1.3](https://github.com/chrisvander/zustand-computed/compare/v2.1.2...v2.1.3) (2026-05-10)
 
 

@@ -43,7 +43,7 @@
     "@tsconfig/bun": "^1.0.7",
     "@types/bun": "^1.1.13",
     "immer": "^11.1.8",
-    "oxfmt": "^0.53.0",
+    "oxfmt": "^0.59.0",
     "oxlint": "^1.63.0",
     "oxlint-tsgolint": "^0.23.0",
     "semver": "^7.6.3",
